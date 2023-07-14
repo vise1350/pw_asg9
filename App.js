@@ -1,60 +1,40 @@
 import React, { useState } from "react";
+import "./style.css";
 
-function TodoApp() {
-  const [task, setTask] = useState("");
-  const [tasks, setTasks] = useState([]);
-  const [status, setStatus] = useState("Not Started");
-  const [selectedTask, setSelectedTask] = useState(null);
+function Calculator() {
+  const [input, setInput] = useState("");
+  const [result, setResult] = useState("");
 
-  const handleSubmit = () => {
-    setTasks([...tasks, task]);
-    setTask("");
+  const handleChange = (event) => {
+    setInput(event.target.value);
   };
 
-  const handleUpdateStatus = () => {
-    setStatus(status === "Not Started" ? "In Progress" : "Done");
+  const handleClear = () => {
+    setInput("");
+    setResult("");
   };
 
-  const handleRemoveTodo = () => {
-    setTasks(tasks.filter((task) => task !== selectedTask));
-    setSelectedTask(null);
+  const handleOperation = (operation) => {
+    const calculation = eval(input + operation);
+    setResult(calculation);
   };
 
   return (
-    <div>
+    <div className="calculator">
       <input
         type="text"
-        placeholder="Enter a task"
-        onChange={(event) => setTask(event.target.value)}
+        placeholder="Enter your calculation"
+        className="input"
+        onChange={handleChange}
       />
-      <button onClick={handleSubmit}>Add Task</button>
-      <ul>
-        {tasks.map((task) => (
-          <li
-            key={task}
-            onClick={() => setSelectedTask(task)}
-            style={{
-              textDecoration: task === selectedTask ? "underline" : "",
-            }}
-          >
-            {task}
-            <span>
-              {status}
-              <button
-                onClick={handleUpdateStatus}
-                style={{ marginLeft: 10 }}
-              >
-                Update Status
-              </button>
-              <button onClick={handleRemoveTodo} style={{ marginLeft: 10 }}>
-                Remove Todo
-              </button>
-            </span>
-          </li>
-        ))}
-      </ul>
+      <button className="button" onClick={handleClear}>Clear</button>
+      <button className="button" onClick={() => handleOperation("+")}>+</button>
+      <button className="button" onClick={() => handleOperation("-")}>-</button>
+      <button className="button" onClick={() => handleOperation("*")}>*</button>
+      <button className="button" onClick={() => handleOperation("/")}>/</button>
+      <h2 className="result">Result: {result}</h2>
     </div>
   );
 }
 
-export default TodoApp;
+export default Calculator;
